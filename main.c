@@ -28,7 +28,18 @@ int main(void) {
     umask(0);
 
     /* Open any logs here */
+    FILE *pLog = NULL;
+    pLog = fopen("/tmp/daemonLog.txt", "w");
 
+    if(!pLog)
+        exit(EXIT_FAILURE);
+    else {
+        char *pLogMSG = "daemon started\n";
+        fwrite((void*)pLogMSG, sizeof(char), (strlen(pLogMSG)+1), pLog);
+        fflush(pLog);
+        fclose(pLog);
+        pLog = NULL;
+    }
     /* Create a new SID for the child process */
     sid = setsid();
     if (sid < 0) {
@@ -50,12 +61,30 @@ int main(void) {
     close(STDERR_FILENO);
 
     /* Daemon-specific initialization goes here */
+    int iCnt = 1;
 
     /* The Big Loop */
     while (1) {
-       /* Do some task here ... */
+        /* Do some task here ... */
+        char cBuffer[512];
+        snprintf(cBuffer, sizeof(cBuffer), "loop: %d\n", iCnt);
 
-       sleep(30); /* wait 30 seconds */
+        char *pLogMSG = cBuffer;
+
+        pLog = fopen("/tmp/daemonLog.txt", "a");
+        if(pLog) {
+            fwrite((void*)pLogMSG, sizeof(char), (strlen(pLogMSG)+1), pLog);
+            fflush(pLog);
+            fclose(pLog);
+            pLog = NULL;
+        }
+
+        sleep(5); /* wait 30 seconds */
+
+        if (iCnt == 10)
+            break;
+        else
+            iCnt++;
     }
 
     exit(EXIT_SUCCESS);
