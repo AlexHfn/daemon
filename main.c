@@ -34,8 +34,8 @@ int main(void) {
     if(!pLog)
         exit(EXIT_FAILURE);
     else {
-        char *pLogMSG = "daemon started\n";
-        fwrite((void*)pLogMSG, sizeof(char), (strlen(pLogMSG)+1), pLog);
+        char cLogMSG[] = "daemon started\n";
+        fwrite((void*)cLogMSG, sizeof(char), (strlen(cLogMSG)+1), pLog);
         fflush(pLog);
         fclose(pLog);
         pLog = NULL;
