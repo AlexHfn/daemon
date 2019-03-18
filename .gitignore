@@ -1,0 +1,16 @@
+##############
+# .gitignore the following files and folders
+
+# Binary
+daemon
+
+# Object files
+*.o
+
+# Others
+*.log
+
+
+
+# Helpfull link:
+# https://de.atlassian.com/git/tutorials/saving-changes/gitignore
